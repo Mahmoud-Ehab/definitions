@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
-import { cn } from '@/lib/utils' 
+import { cn } from '@/lib/utils';
 import './globals.css';
 
-import { inter } from "@/app/fonts"
-import { Button } from "@/components/ui/button"
+import { inter } from '@/app/fonts';
+import { Button } from '@/components/ui/button';
 
 export const metadata: Metadata = {
   title: 'Definitions',
@@ -17,8 +17,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(inter.className, "overflow-x-hidden")}>
-        <header className="flex items-center justify-end h-16 px-12 w-screen bg-primary">
+      <body className={cn(inter.className, 'overflow-x-hidden antialiased')}>
+        <header className="flex h-16 w-screen items-center justify-end bg-background px-12">
           <Button>Login with Google</Button>
         </header>
         {children}
