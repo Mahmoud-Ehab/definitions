@@ -7,7 +7,6 @@ import { FadeInUp, FadeOutUp } from '@/lib/animations';
 
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
-import { useAnimate } from 'react-animation-maker';
 
 type Props = {
   word: string;
@@ -15,12 +14,6 @@ type Props = {
 
 export default function SuggestedWordsArea(props: Props) {
   const [words, setWords] = useState([]);
-  const [Anim, setAnim] = useAnimate(FadeOutUp);
-
-  useEffect(() => {
-    setAnim(words?.length == 0 ? FadeOutUp : FadeInUp);
-  }, [words]);
-
   return (
     <Anim>
       <ScrollArea className="absolute z-0 m-2 h-auto max-h-72 w-auto rounded-md border">

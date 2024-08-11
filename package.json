@@ -17,13 +17,14 @@
     "@radix-ui/react-slot": "^1.1.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "cracksdb": "^1.0.2",
     "lucide-react": "^0.426.0",
-    "next": "14.2.5",
+    "next": "15.0.0-canary.66",
     "next-themes": "^0.3.0",
     "primeng": "^17.18.8",
-    "react": "^18",
+    "react": "19.0.0-rc-f38c22b244-20240704",
     "react-animation-maker": "^1.1.8",
-    "react-dom": "^18",
+    "react-dom": "19.0.0-rc-f38c22b244-20240704",
     "react-icons": "^5.2.1",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7"
@@ -41,5 +42,8 @@
     "prettier-plugin-tailwindcss": "^0.6.5",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=16.14.0 <=20.15.1"
   }
 }
