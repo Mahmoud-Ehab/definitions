@@ -5,6 +5,9 @@ import './globals.css';
 import { inter } from '@/app/fonts';
 import { Button } from '@/components/ui/button';
 
+import { ThemeProvider } from '@/components/theme-provider';
+import { ModeToggleBtn } from '@/components/ModeToggleBtn';
+
 export const metadata: Metadata = {
   title: 'Definitions',
   description: 'A full-stack web application dictionary',
@@ -18,11 +21,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn(inter.className, 'overflow-x-hidden antialiased')}>
-        <header className="flex h-16 w-screen items-center justify-end bg-background px-12">
-          <Button>Login with Google</Button>
-        </header>
-        {children}
-        <footer></footer>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <header className="flex h-16 w-screen items-center justify-between bg-background px-12">
+            <ModeToggleBtn />
+            <Button>Login with Google</Button>
+          </header>
+          {children}
+          <footer></footer>
+        </ThemeProvider>
       </body>
     </html>
   );
