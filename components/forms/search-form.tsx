@@ -41,6 +41,7 @@ export default function SearchFrom() {
           <CiSearch />
         </Button>
       </form>
+      <SuggestedWordsArea prefix={word} />
     </div>
   );
 }

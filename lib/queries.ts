@@ -11,3 +11,12 @@ export function getWord(text: string, callback: (word: Word) => any, error?: (er
       if (error) error({ error: err })
     });
 }
+
+export function getWordsWithPrefix(prefix: string, callback: (words: string[]) => any) {
+  if (prefix == '') return callback([]);
+  fetch(`/words/${prefix}`)
+  .then(res => res.json())
+  .then(res => {
+    callback(res.words as string[] || [])
+  })
+}

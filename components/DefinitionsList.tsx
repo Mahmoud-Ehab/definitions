@@ -26,17 +26,17 @@ export function DefinitionsList() {
       {word && word.text && (
       <div className="md:w-1/2">
         <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-          {word.text} 
+          {word.text.charAt(0).toUpperCase() + word.text.slice(1)} 
         </h1>
         <h2 className="flex justify-between mt-10 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
           Definitions<span><Button variant="ghost" size="icon"><Plus /></Button></span>
         </h2>
         {word.definitions.map((def, i) => 
-        <div className="my-6">
-          <p key={i} className="leading-7 [&:not(:first-child)]:mt-6">
+        <div key={i} className="my-6">
+          <p className="leading-7 [&:not(:first-child)]:mt-6">
             {def.text}
           </p>
-          <label key={i} className="text-sm opacity-50">{def.reference}</label>
+          <label className="text-sm opacity-50">{def.reference}</label>
         </div>
         )}
       </div>
