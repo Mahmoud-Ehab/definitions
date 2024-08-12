@@ -2,10 +2,10 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { Terminal, LoaderPinwheel } from 'lucide-react';
+import { Terminal, LoaderPinwheel, Plus } from 'lucide-react';
 
+import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-
 import { AddWordForm } from '@/components/forms/add-word-form';
 
 import { getWord } from '@/lib/queries';
@@ -24,15 +24,22 @@ export function DefinitionsList() {
   return (
     <>
       {word && word.text && (
-        <div>
-          <h1>the word: {word.text}</h1>
-          {word.definitions.map((def, i) => (
-            <>
-              <p>{def.text}</p>
-              <p>{def.reference}</p>
-            </>
-          ))}
+      <div className="md:w-1/2">
+        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+          {word.text} 
+        </h1>
+        <h2 className="flex justify-between mt-10 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
+          Definitions<span><Button variant="ghost" size="icon"><Plus /></Button></span>
+        </h2>
+        {word.definitions.map((def, i) => 
+        <div className="my-6">
+          <p key={i} className="leading-7 [&:not(:first-child)]:mt-6">
+            {def.text}
+          </p>
+          <label key={i} className="text-sm opacity-50">{def.reference}</label>
         </div>
+        )}
+      </div>
       )}
 
       {word && !word.text && !word.error && searchParams.get('search') && (
