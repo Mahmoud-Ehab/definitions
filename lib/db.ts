@@ -1,7 +1,7 @@
 import { StateManager, FileManager } from 'cracksdb'
 const db = new StateManager("db", new FileManager({}))
 
-// TODO comment this in production!
+// Initialize the words objects StateFiles
 import { Word } from '@/lib/types'
 const alphabet = "abcdefghijklmnopqrstuvwxyz"
 for (let l1 of alphabet) {
@@ -14,15 +14,15 @@ for (let l1 of alphabet) {
             text: "string",
             reference: "string"
           },
-          examples: "string", // examples are seperated by new line char '\n'
-          embeds: "string", // links of videos or articles... seperated as examples
           V: "number", // validity value
           NV: "number" // invalidity value
         })
       }
   }
   catch(e) {
+    // TODO comment this in production!
     console.warn("db is already initialized!")
+    // Assumes if just one StateFile exists then all do as well
     break
   }
 }

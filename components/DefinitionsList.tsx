@@ -10,7 +10,7 @@ import {
   AlertTitle,
 } from "@/components/ui/alert"
 
-import { getWord } from '@/lib/actions'
+import { getWord } from '@/lib/queries'
 import { Word } from '@/lib/types'
 
 export function DefinitionsList() {
@@ -19,22 +19,22 @@ export function DefinitionsList() {
 
   useEffect(() => {
     const search = searchParams.get('search')
-    if (search) {
-      fetch(`/${search}`)
-      .then(res => res.json())
-      .then(res => {
-        setWord(res.word)
-      })
-      .catch(err => console.error(err))
-    }
+    getWord(search || '', (word) => setWord(word))
   }, [])
 
   return (
     <>
     {word.text ? 
       <label>the word: {word}</label> 
-        : 
-      <label>Word not found!</label>}
+      : 
+      <Alert variant="destructive" className="md:w-1/2">
+        <AlertCircle className="h-4 w-4" />
+        <AlertTitle>Error</AlertTitle>
+        <AlertDescription>
+          Word not Found. 
+        </AlertDescription>
+      </Alert>
+    }
     </>
   )
 }

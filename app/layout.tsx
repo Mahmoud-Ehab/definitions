@@ -4,6 +4,7 @@ import './globals.css';
 
 import { inter } from '@/app/fonts';
 import { Button } from '@/components/ui/button';
+import { LogIn } from 'lucide-react';
 
 import { ThemeProvider } from '@/components/theme-provider';
 import { ModeToggleBtn } from '@/components/ModeToggleBtn';
@@ -29,7 +30,9 @@ export default function RootLayout({
         >
           <header className="flex h-16 w-screen items-center justify-between bg-background px-12">
             <ModeToggleBtn />
-            <Button>Login with Google</Button>
+            <Button>
+              <LogIn className="mr-2" />Login with Google
+            </Button>
           </header>
           {children}
           <footer></footer>
