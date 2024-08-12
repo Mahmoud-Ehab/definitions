@@ -10,13 +10,13 @@ import { CiSearch } from 'react-icons/ci';
 
 export default function SearchFrom() {
   const router = useRouter();
-  const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
   const [word, setWord] = useState('');
 
   useEffect(() => {
-    const search = searchParams.get('search')
-    setWord(search || '')
-  }, [])
+    const search = searchParams.get('search');
+    setWord(search || '');
+  }, []);
 
   function inputHandler({ target }) {
     setWord(target.value || '');
