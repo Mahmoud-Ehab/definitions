@@ -16,8 +16,9 @@ export function DefinitionsList() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
+    setWord(null)
     const search = searchParams.get('search');
-    getWord(search || '', (word) => setWord(word));
+    getWord(search || '', (word) => setWord(word), (err) => setWord(err));
   }, [searchParams]);
 
   return (
@@ -33,7 +34,8 @@ export function DefinitionsList() {
           ))}
         </div>
       )}
-      {word && !word.text && searchParams.get('search') && (
+
+      {word && !word.text && !word.error && searchParams.get('search') && (
         <>
           <Alert className="md:w-1/2">
             <Terminal className="h-4 w-4" />
@@ -45,7 +47,16 @@ export function DefinitionsList() {
           <AddWordForm />
         </>
       )}
-      {!word && searchParams.get('search') && <LoaderPinwheel className="animate-spin" />}
+
+      {!word && searchParams.get('search') && 
+        <LoaderPinwheel className="animate-spin" />
+      }
+
+      {word?.error && 
+        <Alert variant="destructive" className="md:w-1/2">
+          <AlertTitle>{word.error}</AlertTitle>
+        </Alert>
+      }
     </>
   );
 }
