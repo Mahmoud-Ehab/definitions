@@ -1,0 +1,90 @@
+'use client';
+
+import { useActionState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { addMention } from '@/lib/actions';
+
+import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+
+export function AddMentionForm(props: { word_text: string }) {
+  const [state, formAction] = useActionState(addMention, {});
+  const form = useForm();
+
+  useEffect(() => {
+    form.setValue('word_text', props.word_text, { shouldValidate: true })
+  }, [])
+
+  return (
+    <Form {...form}>
+      <form action={formAction} className="m-4 max-w-96 space-y-8 md:min-w-72">
+        <FormField
+          control={form.control}
+          name="mention_title"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Title</FormLabel>
+              <FormControl>
+                <Input placeholder="write a title" {...field} />
+              </FormControl>
+              <FormDescription>
+                Write a brief title describing the attachment: who mentioned the word, where, when... etc.
+              </FormDescription>
+              <FormMessage>{state.errors?.mention_title}</FormMessage>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="mention_hyperlink"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Hyperlink</FormLabel>
+              <FormControl>
+                <Input placeholder="http://www.youtube.com/..." {...field} />
+              </FormControl>
+              <FormDescription>
+                Copy the URL here, it must start with https://
+              </FormDescription>
+              <FormMessage>{state.errors?.mention_hyperlink}</FormMessage>
+            </FormItem>
+          )}
+        />
+        <Button type="submit">Add Mention</Button>
+        {state.message && (
+          <Alert 
+            variant={ state.message.type == "error" && 'destructive' }
+            className={state.message.type == "success" ? 'text-green-600 border-green-600' : ''}
+          >
+            <AlertDescription>{state.message.text}</AlertDescription>
+          </Alert>
+        )}
+        <span className="hidden">
+        <FormField
+          control={form.control}
+          name="word_text"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input placeholder="write the word" {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        </span>
+      </form>
+    </Form>
+  );
+}
