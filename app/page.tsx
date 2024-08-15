@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils';
 import { dancing } from '@/app/fonts';
 
 import SearchForm from '@/components/forms/search-form';
-import { DefinitionsList } from '@/components/DefinitionsList';
+import { WordContainer } from '@/components/WordContainer';
 
 export default function Home() {
   return (
@@ -11,7 +11,7 @@ export default function Home() {
         Definitions
       </h1>
       <SearchForm />
-      <DefinitionsList />
+      <WordContainer />
     </main>
   );
 }

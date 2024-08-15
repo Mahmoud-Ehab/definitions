@@ -30,19 +30,6 @@ export function AddDefinitionForm(props: { word_text: string }) {
   return (
     <Form {...form}>
       <form action={formAction} className="m-4 max-w-96 space-y-8 md:min-w-72">
-        <span className="hidden">
-        <FormField
-          control={form.control}
-          name="word_text"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input placeholder="write the word" {...field} />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        </span>
         <FormField
           control={form.control}
           name="def_content"
@@ -84,6 +71,19 @@ export function AddDefinitionForm(props: { word_text: string }) {
             <AlertDescription>{state.message.text}</AlertDescription>
           </Alert>
         )}
+        <span className="hidden">
+        <FormField
+          control={form.control}
+          name="word_text"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input placeholder="write the word" {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        </span>
       </form>
     </Form>
   );
