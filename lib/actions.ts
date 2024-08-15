@@ -1,17 +1,14 @@
 'use server';
 
-import { db } from '@/lib/db';
-import { Word } from '@/lib/types';
+import { getDB } from '@/lib/db';
+import { Word, Definition, Example, Mention } from '@/lib/types';
 import { z } from 'zod';
 
-const formSchema = z.object({
-  word_text: z.string().min(2).max(50),
-  def_content: z.string().min(10).max(255),
-  def_reference: z.string().min(10).max(50),
-});
-
 export type State = {
-  message: string;
+  message: {
+    text: string;
+    type: "success" | "warning" | "error";
+  };
   errors?: {
     word_text?: string[];
     def_content?: string[];
@@ -19,8 +16,21 @@ export type State = {
   };
 };
 
+const formSchema = z.object({
+  word_text: z.string().min(2).max(50),
+  def_content: z.string().min(10).max(255),
+  def_reference: z.string().min(10).max(45),
+  example: z.string().min(10).max(145),
+  mention_title: z.string().min(10).max(45),
+  mention_hyperlink: z.string().startsWith("https://", { message: "Must provide secure URL" })
+});
+
+const addDefinitionSchema = formSchema.pick({ word_text: true, def_content: true, def_reference: true })
+const addExampleSchema = formSchema.pick({ word_text: true, example: true })
+const addMentionSchema = formSchema.pick({ word_text: true, mention_title: true, mention_hyperlink: true })
+
 export async function addWord(_: State, formData: FormData): Promise<State> {
-  const valFields = formSchema.safeParse({
+  const valFields = addDefinitionSchema.safeParse({
     word_text: formData.get('word_text'),
     def_content: formData.get('def_content'),
     def_reference: formData.get('def_reference'),
@@ -28,7 +38,7 @@ export async function addWord(_: State, formData: FormData): Promise<State> {
 
   if (!valFields.success) {
     return {
-      message: 'Error submitting the form!',
+      message: {text: 'Error submitting the form!', type: "error"},
       errors: valFields.error.flatten().fieldErrors,
     };
   }
@@ -42,16 +52,18 @@ export async function addWord(_: State, formData: FormData): Promise<State> {
       V: 1,
       NV: 0
     }],
+    examples: [{ text: "", V: 1, NV: 0 }],
+    mentions: [{ title: "", hyperlink: "", V: 1, NV: 0 }],
     V: 1,
     NV: 0,
   };
 
   try {
-    const sf = db.get(newWord.text.slice(0, 2));
+    const sf = (await getDB()).get(newWord.text.slice(0, 2))
     const exists = sf.getWhere((word) => (word as Word).text == newWord.text);
     if ((exists as Word).text) {
       return {
-        message: newWord.text + ' already exists.',
+        message: {text: newWord.text + ' already exists.', type: "warning"},
         errors: {
           word_text: ['word already exists'],
         },
@@ -59,12 +71,56 @@ export async function addWord(_: State, formData: FormData): Promise<State> {
     }
     sf.add(newWord);
     return {
-      message: newWord.text + ' has been successfully added.',
+      message: {text: newWord.text + ' has been successfully added.', type: "success"},
     };
   } catch (err) {
     console.error(err);
     return {
-      message: 'Something went wrong!',
+      message: {text: 'Something went wrong!', type: "error"},
     };
   }
 }
+
+export async function addDefinition(_: State, formData: FormData) {
+  const valFields = addDefinitionSchema.safeParse({
+    word_text: formData.get('word_text'),
+    def_content: formData.get('def_content'),
+    def_reference: formData.get('def_reference'),
+  })
+
+  if (!valFields.success) {
+    return {
+      message: {text: 'Error submitting the form!', type: "error"},
+      errors: valFields.error.flatten().fieldErrors,
+    }
+  }
+
+  const newDefinition: Definition = {
+    text: valFields.data.def_content,
+    reference: valFields.data.def_reference,
+    V: 1,
+    NV: 0
+  }
+
+  try {
+    const sf = (await getDB()).get(valFields.data.word_text.slice(0, 2))
+    // check if a def from the same ref exists
+    const exists = sf.getWhere(word => word.definitions.find(def => def.reference == newDefinition.reference))
+    if (exists.text) {
+      return {
+        message: {text: 'Failed: there is already a definition from the same reference included!', type: "error"}
+      }
+    }
+    sf.updateWhere((word) => (word as Word).text == valFields.data.word_text, (prev) => ({
+      definitions: [...prev.definitions, newDefinition]
+    }))
+    return {
+      message: {text: 'Your definition has been added successfully. Refresh the page and check it out.', type:"success"},
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      message: {text: 'Something went wrong!', type: "error"},
+    };
+ }
+} 

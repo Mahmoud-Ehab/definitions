@@ -1,8 +1,8 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { addWord } from '@/lib/actions';
+import { addDefinition } from '@/lib/actions';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -19,33 +19,36 @@ import { Textarea } from '@/components/ui/textarea';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
-export function AddWordForm() {
-  const [state, formAction] = useActionState(addWord, {});
+export function AddDefinitionForm(props: { word_text: string }) {
+  const [state, formAction] = useActionState(addDefinition, {});
   const form = useForm();
+
+  useEffect(() => {
+    form.setValue('word_text', props.word_text, { shouldValidate: true })
+  }, [])
 
   return (
     <Form {...form}>
       <form action={formAction} className="m-4 max-w-96 space-y-8 md:min-w-72">
+        <span className="hidden">
         <FormField
           control={form.control}
           name="word_text"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Word</FormLabel>
               <FormControl>
                 <Input placeholder="write the word" {...field} />
               </FormControl>
-              <FormDescription />
-              <FormMessage>{state.errors?.word_text}</FormMessage>
             </FormItem>
           )}
         />
+        </span>
         <FormField
           control={form.control}
           name="def_content"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Definition</FormLabel>
+              <FormLabel>Definition {props.word_text}</FormLabel>
               <FormControl>
                 <Textarea placeholder="write the definition" {...field} />
               </FormControl>
@@ -72,7 +75,7 @@ export function AddWordForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Add Word</Button>
+        <Button type="submit">Add Definition</Button>
         {state.message && (
           <Alert 
             variant={ state.message.type == "error" && 'destructive' }

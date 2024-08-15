@@ -6,7 +6,17 @@ import { Terminal, LoaderPinwheel, Plus } from 'lucide-react';
 
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
 import { AddWordForm } from '@/components/forms/add-word-form';
+import { AddDefinitionForm } from '@/components/forms/add-def-form'
 
 import { getWord } from '@/lib/queries';
 import { Word } from '@/lib/types';
@@ -29,7 +39,7 @@ export function DefinitionsList() {
           {word.text.charAt(0).toUpperCase() + word.text.slice(1)} 
         </h1>
         <h2 className="flex justify-between mt-10 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
-          Definitions<span><Button variant="ghost" size="icon"><Plus /></Button></span>
+          Definitions<span><AddDefDialog word_text={word.text} /></span>
         </h2>
         {word.definitions.map((def, i) => 
         <div key={i} className="my-6">
@@ -66,4 +76,25 @@ export function DefinitionsList() {
       }
     </>
   );
+}
+
+
+function AddDefDialog(props: { word_text: string }) {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="ghost" size="icon"><Plus /></Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Add Definition to "{props.word_text}"</DialogTitle>
+          <DialogDescription>
+            Make sure that the definition is correct. 
+            And be careful of typos; your input will not be editable.
+          </DialogDescription>
+        </DialogHeader>
+        <AddDefinitionForm word_text={props.word_text} />
+      </DialogContent>
+    </Dialog>
+  )
 }
