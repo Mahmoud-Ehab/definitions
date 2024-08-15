@@ -20,13 +20,14 @@ const formSchema = z.object({
   word_text: z.string().min(2).max(50),
   def_content: z.string().min(10).max(255),
   def_reference: z.string().min(10).max(45),
-  example: z.string().min(10).max(145),
+  example_text: z.string().min(10).max(145),
+  example_reference: z.string().max(45),
   mention_title: z.string().min(10).max(45),
   mention_hyperlink: z.string().startsWith("https://", { message: "Must provide secure URL" })
 });
 
 const addDefinitionSchema = formSchema.pick({ word_text: true, def_content: true, def_reference: true })
-const addExampleSchema = formSchema.pick({ word_text: true, example: true })
+const addExampleSchema = formSchema.pick({ word_text: true, example_text: true, example_reference: true })
 const addMentionSchema = formSchema.pick({ word_text: true, mention_title: true, mention_hyperlink: true })
 
 export async function addWord(_: State, formData: FormData): Promise<State> {
@@ -52,7 +53,7 @@ export async function addWord(_: State, formData: FormData): Promise<State> {
       V: 1,
       NV: 0
     }],
-    examples: [{ text: "", V: 1, NV: 0 }],
+    examples: [{ text: "", reference: "", V: 1, NV: 0 }],
     mentions: [{ title: "", hyperlink: "", V: 1, NV: 0 }],
     V: 1,
     NV: 0,
@@ -74,7 +75,7 @@ export async function addWord(_: State, formData: FormData): Promise<State> {
       message: {text: newWord.text + ' has been successfully added.', type: "success"},
     };
   } catch (err) {
-    console.error(err);
+    console.error(Date().split(" ")[4], ": ", err);
     return {
       message: {text: 'Something went wrong!', type: "error"},
     };
@@ -118,9 +119,86 @@ export async function addDefinition(_: State, formData: FormData) {
       message: {text: 'Your definition has been added successfully. Refresh the page and check it out.', type:"success"},
     };
   } catch (err) {
-    console.error(err);
+    console.error(Date().split(" ")[4], ": ", err);
     return {
       message: {text: 'Something went wrong!', type: "error"},
     };
  }
 } 
+
+export async function addExample(_: State, formData: FormData) {
+  const valFields = addExampleSchema.safeParse({
+    word_text: formData.get('word_text'),
+    example_text: formData.get('example_text'),
+    example_reference: formData.get('example_reference'),
+  })
+
+  if (!valFields.success) {
+    return {
+      message: {text: 'Error submitting the form!', type: "error"},
+      errors: valFields.error.flatten().fieldErrors,
+    }
+  }
+
+  const newExample: Example = {
+    text: valFields.data.example_text,
+    reference: valFields.data.example_reference,
+    V: 1,
+    NV: 0
+  }
+
+  try {
+    const sf = (await getDB()).get(valFields.data.word_text.slice(0, 2))
+    // check if a def from the same ref exists
+    sf.updateWhere((word) => (word as Word).text == valFields.data.word_text, (prev) => ({
+      examples: [...prev.examples, newExample]
+    }))
+    return {
+      message: {text: 'The example has been added successfully. Refresh the page and check it out.', type:"success"},
+    };
+  } catch (err) {
+    console.error(Date().split(" ")[4], ": ", err);
+    return {
+      message: {text: 'Something went wrong!', type: "error"},
+    };
+ }
+}
+
+export async function addMention(_: State, formData: FormData) {
+  const valFields = addMentionSchema.safeParse({
+    word_text: formData.get('word_text'),
+    mention_title: formData.get('mention_title'),
+    mention_hyperlink: formData.get('mention_hyperlink')
+  })
+
+  if (!valFields.success) {
+    return {
+      message: {text: 'Error submitting the form!', type: "error"},
+      errors: valFields.error.flatten().fieldErrors,
+    }
+  }
+
+  const newMention: Mention = {
+    title: valFields.data.mention_title,
+    hyperlink: valFields.data.mention_hyperlink,
+    V: 1,
+    NV: 0
+  }
+
+  try {
+    const sf = (await getDB()).get(valFields.data.word_text.slice(0, 2))
+    // check if a def from the same ref exists
+    sf.updateWhere((word) => (word as Word).text == valFields.data.word_text, (prev) => ({
+      mentions: [...prev.mentions, newMention]
+    }))
+    return {
+      message: {text: 'The data has been added successfully. Refresh the page and check it out.', type:"success"},
+    };
+  } catch (err) {
+    console.error(Date().split(" ")[4], ": ", err);
+    return {
+      message: {text: 'Something went wrong!', type: "error"},
+    };
+ }
+} 
+

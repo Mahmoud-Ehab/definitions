@@ -7,6 +7,7 @@ import { Terminal, LoaderPinwheel } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AddWordForm } from '@/components/forms/add-word-form';
 import { DefinitionsWrapper } from '@/components/wrappers/definitions-wrapper'
+import { ExamplesWrapper } from '@/components/wrappers/examples-wrapper'
 
 import { getWord } from '@/lib/queries';
 import { Word } from '@/lib/types';
@@ -29,6 +30,7 @@ export function WordContainer() {
             {word.text.charAt(0).toUpperCase() + word.text.slice(1)} 
           </h1>
           <DefinitionsWrapper word={word} />
+          <ExamplesWrapper word={word} />
         </div>
       }
       {word && !word.text && !word.error && searchParams.get('search') && (

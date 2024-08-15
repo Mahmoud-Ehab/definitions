@@ -7,6 +7,7 @@ export type Definition = {
 
 export type Example = {
   text: string;
+  reference: string;
   V: number;
   NV: number;
 }
@@ -40,6 +41,7 @@ export const DB_Word = {
   examples: {
     length: 'number',
     text: 'string',
+    reference: 'string',
     V: 'number',
     NV: 'number'
   },

@@ -2,7 +2,7 @@
 
 import { useActionState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { addDefinition } from '@/lib/actions';
+import { addExample } from '@/lib/actions';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -19,8 +19,8 @@ import { Textarea } from '@/components/ui/textarea';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
-export function AddDefinitionForm(props: { word_text: string }) {
-  const [state, formAction] = useActionState(addDefinition, {});
+export function AddExampleForm(props: { word_text: string }) {
+  const [state, formAction] = useActionState(addExample, {});
   const form = useForm();
 
   useEffect(() => {
@@ -32,37 +32,37 @@ export function AddDefinitionForm(props: { word_text: string }) {
       <form action={formAction} className="m-4 max-w-96 space-y-8 md:min-w-72">
         <FormField
           control={form.control}
-          name="def_content"
+          name="example_text"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Definition</FormLabel>
+              <FormLabel>Example</FormLabel>
               <FormControl>
-                <Textarea placeholder="write the definition" {...field} />
+                <Input placeholder="write an example" {...field} />
               </FormControl>
               <FormDescription>
-                Write the definition of the word, you way copy it from your source.
+                Write an example of the word.
               </FormDescription>
-              <FormMessage>{state.errors?.def_content}</FormMessage>
+              <FormMessage>{state.errors?.example_text}</FormMessage>
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
-          name="def_reference"
+          name="example_reference"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Reference</FormLabel>
               <FormControl>
-                <Input placeholder="write your reference" {...field} />
+                <Input placeholder="write your reference, if any." {...field} />
               </FormControl>
               <FormDescription>
-                From where did you get the definition. Just write your name if it's yours :D
+                Did you read or hear that example, for intance, from any book or movie?
               </FormDescription>
-              <FormMessage>{state.errors?.def_reference}</FormMessage>
+              <FormMessage>{state.errors?.example_reference}</FormMessage>
             </FormItem>
           )}
         />
-        <Button type="submit">Add Definition</Button>
+        <Button type="submit">Add Example</Button>
         {state.message && (
           <Alert 
             variant={ state.message.type == "error" && 'destructive' }
