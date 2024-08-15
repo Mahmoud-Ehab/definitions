@@ -6,9 +6,9 @@ import { Terminal, LoaderPinwheel } from 'lucide-react';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AddWordForm } from '@/components/forms/add-word-form';
-import { DefinitionsWrapper } from '@/components/wrappers/definitions-wrapper'
-import { ExamplesWrapper } from '@/components/wrappers/examples-wrapper'
-import { MentionsWrapper } from '@/components/wrappers/mentions-wrapper'
+import { DefinitionsWrapper } from '@/components/wrappers/definitions-wrapper';
+import { ExamplesWrapper } from '@/components/wrappers/examples-wrapper';
+import { MentionsWrapper } from '@/components/wrappers/mentions-wrapper';
 
 import { getWord } from '@/lib/queries';
 import { Word } from '@/lib/types';
@@ -18,23 +18,27 @@ export function WordContainer() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    setWord(null)
+    setWord(null);
     const search = searchParams.get('search');
-    getWord(search || '', (word) => setWord(word), (err) => setWord(err));
+    getWord(
+      search || '',
+      (word) => setWord(word),
+      (err) => setWord(err),
+    );
   }, [searchParams]);
 
   return (
     <>
-      {word && word.text && 
+      {word && word.text && (
         <div className="md:w-1/2">
           <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-            {word.text.charAt(0).toUpperCase() + word.text.slice(1)} 
+            {word.text.charAt(0).toUpperCase() + word.text.slice(1)}
           </h1>
           <DefinitionsWrapper word={word} />
           <ExamplesWrapper word={word} />
           <MentionsWrapper word={word} />
         </div>
-      }
+      )}
       {word && !word.text && !word.error && searchParams.get('search') && (
         <>
           <Alert className="md:w-1/2">
@@ -48,16 +52,13 @@ export function WordContainer() {
         </>
       )}
 
-      {!word && searchParams.get('search') && 
-        <LoaderPinwheel className="animate-spin" />
-      }
+      {!word && searchParams.get('search') && <LoaderPinwheel className="animate-spin" />}
 
-      {word?.error && 
+      {word?.error && (
         <Alert variant="destructive" className="md:w-1/2">
           <AlertTitle>{word.error}</AlertTitle>
         </Alert>
-      }
+      )}
     </>
   );
 }
-

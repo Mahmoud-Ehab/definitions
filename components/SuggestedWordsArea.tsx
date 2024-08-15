@@ -14,24 +14,27 @@ type Props = {
 
 export default function SuggestedWordsArea(props: Props) {
   const [words, setWords] = useState([]);
-  const [timeoutId, setTimeoutId] = useState(null)
+  const [timeoutId, setTimeoutId] = useState(null);
 
   useEffect(() => {
-    if (timeoutId) { 
-      clearTimeout(timeoutId)
+    if (timeoutId) {
+      clearTimeout(timeoutId);
     }
-    setTimeoutId(setTimeout(() => {
-      getWordsWithPrefix(props.prefix, (words) => setWords(words))
-    }, 350)) 
-  }, [props.prefix])
+    setTimeoutId(
+      setTimeout(() => {
+        getWordsWithPrefix(props.prefix, (words) => setWords(words));
+      }, 350),
+    );
+  }, [props.prefix]);
 
   return (
-    <ScrollArea className={cn(
-      "z-30 bg-background m-2 h-auto max-h-72 w-auto rounded-md border",
-      {'hidden': words.length == 0}
-    )}>
+    <ScrollArea
+      className={cn('z-30 m-2 h-auto max-h-72 w-auto rounded-md border bg-background', {
+        hidden: words.length == 0,
+      })}
+    >
       <div className="p-4">
-        <h1 className="mb-4 text-md font-medium leading-none">{props.prefix}... do you mean?</h1>
+        <h1 className="text-md mb-4 font-medium leading-none">{props.prefix}... do you mean?</h1>
         {words.map((word, i) => (
           <Link href={`/?search=${word}`}>
             <div key={i} className="text-sm transition ease-out hover:translate-y-0.5">

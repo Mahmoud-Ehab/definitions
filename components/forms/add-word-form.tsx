@@ -74,9 +74,9 @@ export function AddWordForm() {
         />
         <Button type="submit">Add Word</Button>
         {state.message && (
-          <Alert 
-            variant={ state.message.type == "error" && 'destructive' }
-            className={state.message.type == "success" ? 'text-green-600 border-green-600' : ''}
+          <Alert
+            variant={state.message.type == 'error' && 'destructive'}
+            className={state.message.type == 'success' ? 'border-green-600 text-green-600' : ''}
           >
             <AlertDescription>{state.message.text}</AlertDescription>
           </Alert>

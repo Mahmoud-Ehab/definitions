@@ -1,6 +1,6 @@
 import { Word } from '@/lib/types';
-import { getDB } from '@/lib/db'
-import { NextResponse } from 'next/server'
+import { getDB } from '@/lib/db';
+import { NextResponse } from 'next/server';
 
 export async function GET(req: Request) {
   try {
@@ -10,7 +10,7 @@ export async function GET(req: Request) {
     const word = stateFile.getWhere((word) => (word as Word).text == word_text) as Word;
     return NextResponse.json({ word });
   } catch (e) {
-    console.error(e)
-    return NextResponse.json({ error: "word not found" }, { status: 404 });
+    console.error(e);
+    return NextResponse.json({ error: 'word not found' }, { status: 404 });
   }
 }

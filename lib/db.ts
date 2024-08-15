@@ -1,8 +1,8 @@
-'use server'
+'use server';
 
-import { createContext } from 'react'
-import { StateManager, FileManager } from 'cracksdb'
-import { Word, DB_Word } from '@/lib/types'
+import { createContext } from 'react';
+import { StateManager, FileManager } from 'cracksdb';
+import { Word, DB_Word } from '@/lib/types';
 
 function createDB() {
   const db = new StateManager('db', new FileManager({}));
@@ -16,17 +16,17 @@ function createDB() {
       }
     } catch (e) {
       // TODO comment this in production!
-      console.warn(Date().split(" ")[4] + ': db is already initialized!');
+      console.warn(Date().split(' ')[4] + ': db is already initialized!');
       // Assumes if just one StateFile exists then all do as well
       break;
     }
   }
-  return db
+  return db;
 }
 
 export async function getDB() {
   if (!global.db) {
-    global.db = createDB()
+    global.db = createDB();
   }
-  return global.db
+  return global.db;
 }

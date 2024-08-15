@@ -24,8 +24,8 @@ export function AddDefinitionForm(props: { word_text: string }) {
   const form = useForm();
 
   useEffect(() => {
-    form.setValue('word_text', props.word_text, { shouldValidate: true })
-  }, [])
+    form.setValue('word_text', props.word_text, { shouldValidate: true });
+  }, []);
 
   return (
     <Form {...form}>
@@ -64,25 +64,25 @@ export function AddDefinitionForm(props: { word_text: string }) {
         />
         <Button type="submit">Add Definition</Button>
         {state.message && (
-          <Alert 
-            variant={ state.message.type == "error" && 'destructive' }
-            className={state.message.type == "success" ? 'text-green-600 border-green-600' : ''}
+          <Alert
+            variant={state.message.type == 'error' && 'destructive'}
+            className={state.message.type == 'success' ? 'border-green-600 text-green-600' : ''}
           >
             <AlertDescription>{state.message.text}</AlertDescription>
           </Alert>
         )}
         <span className="hidden">
-        <FormField
-          control={form.control}
-          name="word_text"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input placeholder="write the word" {...field} />
-              </FormControl>
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="word_text"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input placeholder="write the word" {...field} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
         </span>
       </form>
     </Form>

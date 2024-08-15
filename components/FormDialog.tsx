@@ -1,4 +1,4 @@
-import { Plus } from 'lucide-react'
+import { Plus } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -6,28 +6,30 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Button } from '@/components/ui/button'
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
 
 type Props = {
   title: string;
   desc: string;
   form: ReactElement;
-}
+};
 
 export function FormDialog(props: Props) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="icon"><Plus /></Button>
+        <Button variant="ghost" size="icon">
+          <Plus />
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>{props.title}</DialogTitle>
           <DialogDescription>{props.desc}</DialogDescription>
         </DialogHeader>
-        {props.children} 
+        {props.children}
       </DialogContent>
     </Dialog>
-  )
+  );
 }

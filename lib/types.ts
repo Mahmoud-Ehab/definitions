@@ -10,14 +10,14 @@ export type Example = {
   reference: string;
   V: number;
   NV: number;
-}
+};
 
 export type Mention = {
   title: string;
   hyperlink: string;
   V: number;
   NV: number;
-}
+};
 
 export type Word = {
   text: string;
@@ -43,15 +43,15 @@ export const DB_Word = {
     text: 'string',
     reference: 'string',
     V: 'number',
-    NV: 'number'
+    NV: 'number',
   },
   mentions: {
     length: 'number',
     title: 'string',
     hyperlink: 'string',
     V: 'number',
-    NV: 'number'
+    NV: 'number',
   },
   V: 'number', // validity value
   NV: 'number', // invalidity value
-}
+};
