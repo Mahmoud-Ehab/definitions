@@ -36,10 +36,12 @@ export async function addWord(_: State, formData: FormData): Promise<State> {
   const { word_text, def_content, def_reference } = valFields.data;
   const newWord = {
     text: word_text.toLowerCase(),
-    definitions: {
-      text: def_content.replaceAll('<nd>', ' '),
-      reference: def_reference.replaceAll('<nr>', ' '),
-    },
+    definitions: [{
+      text: def_content,
+      reference: def_reference,
+      V: 1,
+      NV: 0
+    }],
     V: 1,
     NV: 0,
   };

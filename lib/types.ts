@@ -1,6 +1,8 @@
 export type Definition = {
   text: string;
   reference: string;
+  V: number;
+  NV: number;
 };
 
 export type Word = {
