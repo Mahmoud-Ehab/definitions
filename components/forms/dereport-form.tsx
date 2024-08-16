@@ -17,8 +17,8 @@ import {
 import { Input } from '@/components/ui/input';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { useToast } from "@/components/ui/use-toast"
-import { ToastAction } from "@/components/ui/toast"
+import { useToast } from '@/components/ui/use-toast';
+import { ToastAction } from '@/components/ui/toast';
 
 import { Dereport } from '@/lib/report-actions';
 
@@ -26,10 +26,10 @@ type Props = {
   word_text: string;
   report_element: string;
   element_id: string;
-}
+};
 
 export function DereportForm(props: Props) {
-  const [state, formAction] = useActionState(Dereport, { message: {text: ""} });
+  const [state, formAction] = useActionState(Dereport, { message: { text: '' } });
   const form = useForm();
   const { toast } = useToast();
 
@@ -38,17 +38,19 @@ export function DereportForm(props: Props) {
     form.setValue('report_element', props.report_element, { shouldValidate: true });
     form.setValue('element_id', props.element_id, { shouldValidate: true });
     if (state.message?.text?.length > 0) {
-      toast({ 
-        title: state.message.text, 
-        variant: state.message.type === "error" && "destructive",
-      })
+      toast({
+        title: state.message.text,
+        variant: state.message.type === 'error' && 'destructive',
+      });
     }
-  }, [state.message])
+  }, [state.message]);
 
   return (
     <Form {...form}>
       <form action={formAction}>
-        <Button variant="ghost" className="text-sm text-red-500 hover:opacity-100" type="submit">undo</Button>
+        <Button variant="ghost" className="text-sm text-red-500 hover:opacity-100" type="submit">
+          undo
+        </Button>
         <span className="hidden">
           <FormField
             control={form.control}

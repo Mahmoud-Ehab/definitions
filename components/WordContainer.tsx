@@ -8,7 +8,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 
 import { AddWordForm } from '@/components/forms/add-word-form';
-import { ReportForm } from '@/components/forms/report-form'
+import { ReportForm } from '@/components/forms/report-form';
 
 import { DefinitionsWrapper } from '@/components/wrappers/definitions-wrapper';
 import { ExamplesWrapper } from '@/components/wrappers/examples-wrapper';
@@ -35,9 +35,11 @@ export function WordContainer() {
     <>
       {word && word.text && (
         <div className="md:w-1/2">
-          <h1 className="flex items-center scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+          <h1 className="flex scroll-m-20 items-center text-4xl font-extrabold tracking-tight lg:text-5xl">
             <span className="mr-4">{word.text.charAt(0).toUpperCase() + word.text.slice(1)}</span>
-            <ReportForm word_text={word.text} report_element="word" element_id={word.text}><Flag /></ReportForm> 
+            <ReportForm word_text={word.text} report_element="word" element_id={word.text}>
+              <Flag />
+            </ReportForm>
           </h1>
           <DefinitionsWrapper word={word} />
           <ExamplesWrapper word={word} />

@@ -71,7 +71,7 @@ export async function addWord(_: State, formData: FormData): Promise<State> {
     mentions: [{ title: '', hyperlink: '', V: 1, NV: 0 }],
     V: 1,
     NV: 0,
-    reports: [{ reporter: '', reportee: '', date: '' }]
+    reports: [{ reporter: '', reportee: '', date: '' }],
   };
 
   try {
@@ -239,4 +239,3 @@ export async function addMention(_: State, formData: FormData) {
     };
   }
 }
-

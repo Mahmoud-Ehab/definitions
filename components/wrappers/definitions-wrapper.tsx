@@ -2,14 +2,10 @@ import { Word } from '@/lib/types';
 
 import { AddDefinitionForm } from '@/components/forms/add-def-form';
 import { FormDialog } from '@/components/FormDialog';
-import { ReportForm } from '@/components/forms/report-form'
-import { Flag } from 'lucide-react'
+import { ReportForm } from '@/components/forms/report-form';
+import { Flag } from 'lucide-react';
 
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 export function DefinitionsWrapper({ word }: { word: Word }) {
   return (
@@ -28,7 +24,7 @@ export function DefinitionsWrapper({ word }: { word: Word }) {
         </span>
       </h2>
       {word.definitions.map((def, i) => (
-        <div key={i} className="flex items-end my-6">
+        <div key={i} className="my-6 flex items-end">
           <Popover>
             <PopoverTrigger>
               <div>
@@ -37,8 +33,16 @@ export function DefinitionsWrapper({ word }: { word: Word }) {
               </div>
             </PopoverTrigger>
             <PopoverContent>
-              <ReportForm className="m-0 p-0" word_text={word.text} report_element="definition" element_id={def.reference}>
-                <div className="flex items-center"><Flag height={18} /><span className="ml-2">Report</span></div>
+              <ReportForm
+                className="m-0 p-0"
+                word_text={word.text}
+                report_element="definition"
+                element_id={def.reference}
+              >
+                <div className="flex items-center">
+                  <Flag height={18} />
+                  <span className="ml-2">Report</span>
+                </div>
               </ReportForm>
             </PopoverContent>
           </Popover>

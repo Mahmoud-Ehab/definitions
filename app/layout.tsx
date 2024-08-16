@@ -10,8 +10,8 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { ModeToggleBtn } from '@/components/ModeToggleBtn';
 import { Toaster } from '@/components/ui/toaster';
 
-import { login, logout } from '@/lib/auth-actions'
-import { auth } from '@/auth'
+import { login, logout } from '@/lib/auth-actions';
+import { auth } from '@/auth';
 
 export const metadata: Metadata = {
   title: 'Definitions',
@@ -23,7 +23,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth()
+  const session = await auth();
   return (
     <html lang="en">
       <body className={cn(inter.className, 'overflow-x-hidden antialiased')}>
@@ -38,7 +38,7 @@ export default async function RootLayout({
             <form action={session?.user ? logout : login}>
               <Button variant="outline" type="submit">
                 {session?.user ? <LogOut className="mr-2" /> : <LogIn className="mr-2" />}
-                {session?.user ? "Logout" : "Login with Google"}
+                {session?.user ? 'Logout' : 'Login with Google'}
               </Button>
             </form>
           </header>
