@@ -13,7 +13,7 @@ type Props = {
 };
 
 export default function SuggestedWordsArea(props: Props) {
-  const [words, setWords] = useState([]);
+  const [words, setWords] = useState([] as Array<string>);
   const [timeoutId, setTimeoutId] = useState(null);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export default function SuggestedWordsArea(props: Props) {
     setTimeoutId(
       setTimeout(() => {
         getWordsWithPrefix(props.prefix, (words) => setWords(words));
-      }, 350),
+      }, 350) as any,
     );
   }, [props.prefix]);
 
@@ -36,7 +36,7 @@ export default function SuggestedWordsArea(props: Props) {
       <div className="p-4">
         <h1 className="text-md mb-4 font-medium leading-none">{props.prefix}... do you mean?</h1>
         {words.map((word, i) => (
-          <Link href={`/?search=${word}`}>
+          <Link key={i} href={`/?search=${word}`}>
             <div key={i} className="text-sm transition ease-out hover:translate-y-0.5">
               <label>{word}</label>
               <Separator className="my-2" />

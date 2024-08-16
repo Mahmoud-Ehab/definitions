@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 type Props = {
   title: string;
   desc: string;
-  form: ReactElement;
+  children: any;
 };
 
 export function FormDialog(props: Props) {

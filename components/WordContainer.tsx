@@ -26,8 +26,8 @@ export function WordContainer() {
     const search = searchParams.get('search');
     getWord(
       search || '',
-      (word) => setWord(word),
-      (err) => setWord(err),
+      (word) => setWord(word as any),
+      (err) => setWord(err as any),
     );
   }, [searchParams]);
 

@@ -26,7 +26,7 @@ export function MentionsWrapper({ word }: { word: Word }) {
       {word.mentions
         .filter((mention) => mention.title != '')
         .map((mention, i) => (
-          <div className="w-full">
+          <div key={i} className="w-full">
             <Popover>
               <PopoverTrigger className="w-full text-left">
                 <div

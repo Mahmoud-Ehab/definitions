@@ -56,7 +56,7 @@ export function AddDefinitionForm(props: { word_text: string }) {
                 <Input placeholder="write your reference" {...field} />
               </FormControl>
               <FormDescription>
-                From where did you get the definition. Just write your name if it's yours :D
+                From where did you get the definition. Just write your name if it&apos;s yours :D
               </FormDescription>
               <FormMessage>{state.errors?.def_reference}</FormMessage>
             </FormItem>
