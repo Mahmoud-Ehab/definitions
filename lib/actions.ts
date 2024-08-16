@@ -24,6 +24,7 @@ const formSchema = z.object({
   example_reference: z.string().max(45),
   mention_title: z.string().min(10).max(45),
   mention_hyperlink: z.string().startsWith('https://', { message: 'Must provide secure URL' }),
+  report_element: z.string()
 });
 
 const addDefinitionSchema = formSchema.pick({
@@ -41,6 +42,10 @@ const addMentionSchema = formSchema.pick({
   mention_title: true,
   mention_hyperlink: true,
 });
+const reportSchema = formSchema.pick({
+  word_text: true,
+  report_element: true,
+})
 
 export async function addWord(_: State, formData: FormData): Promise<State> {
   const valFields = addDefinitionSchema.safeParse({
@@ -238,3 +243,91 @@ export async function addMention(_: State, formData: FormData) {
     };
   }
 }
+
+
+import { auth } from '@/auth'
+
+export async function Report(_: State, formData: FormData) {
+  const valFields = reportSchema.safeParse({
+    word_text: formData.get('word_text'),
+    report_element: formData.get('report_element'),
+  })
+
+  const session = await auth()
+  if (!session?.user) {
+    return {
+      message: { text: 'You have to login in order to report items.', type: 'error' },
+    };
+  }
+
+  if (!valFields.success) {
+    return {
+      message: { text: 'Error submitting the form!', type: 'error' },
+      errors: valFields.error.flatten().fieldErrors,
+    };
+  }
+
+  try {
+    const sf = (await getDB()).get(valFields.data.word_text.slice(0, 2));
+    const index = sf.getIndexOf((word) => (word as Word).text == valFields.data.word_text)[0];
+    let word = sf.get(index)
+    if (!(word as Word).text) {
+      return {message: { text: 'Cannot find the word ' + word.text, type: 'error' }};
+    }
+    const { report_element } = valFields.data;
+    if (!["word", "definition", "example", "mention"].includes(report_element)) {
+      return {message: { text: 'Invalid input!', type: 'error' }};
+    }
+    word = reportElement(word, report_element);
+    sf.update(index, () => word)
+    return {
+      message: {
+        text: 'Done. Thanks for reporting.',
+        type: 'success',
+      },
+    };
+  } catch (err) {
+    console.error(Date().split(' ')[4], ': ', err);
+    return {
+      message: { text: 'Something went wrong!', type: 'error' },
+    };
+  }
+}
+
+type Element = {
+  type: "word" | "definition" | "example" | "mention",
+  id: string // it could be definition reference, example text, or mention hyperlink.
+}
+
+// map from element type to its id attribute
+const identifiers = {
+  word: "word_text",
+  definition: "def_reference",
+  example: "example_text",
+  mention: "mention_hyperlink"
+}
+
+function reportElement(word: Word, element_type: string): Word {
+  if (element_type === "word") {
+    word.NV += 2
+    return word
+  }
+  else if (element_type === "definition") {
+    const i = word.definitions.findIndex(def => def[identifiers[element_type]] === element_id)
+    word.definitions[i].NV += 2
+    return word
+  }
+  else if (element.type == "example") {
+    const i = word.examples.findIndex(exam => exam[identifiers[element_type]] === element_id)
+    word.examples[i].NV += 2
+    return word
+  }
+  else if (element.type == "mention") {
+    const i = word.mentions.findIndex(mention => mention[identifiers[element_type]] === element_id)
+    word.mentions[i].NV += 2
+    return word
+  }
+  else {
+    throw Error("reportElement Error: invalid usage!")
+  }
+} 

@@ -35,7 +35,6 @@ export default async function RootLayout({
         >
           <header className="flex h-16 w-screen items-center justify-between bg-background px-8 md:px-12">
             <ModeToggleBtn />
-            {session?.user && <label className="text-sm">You have logged in as {session.user.name}</label>}
             <form action={session?.user ? logout : login}>
               <Button variant="outline" type="submit">
                 {session?.user ? <LogOut className="mr-2" /> : <LogIn className="mr-2" />}
