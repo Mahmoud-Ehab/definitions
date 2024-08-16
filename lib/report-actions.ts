@@ -48,7 +48,7 @@ export async function Report(_: State, formData: FormData) {
     }
     // ensure that the user didn't report the same element before
     for (let report of word.reports) {
-      if (report.reporter === session.user.email) {
+      if (report.reporter === session.user.email && report.reportee === report_element + "_" + element_id) {
         return { message: {text: 'You have already reported this item.'} }
       }
     }
@@ -129,16 +129,16 @@ type Element = {
 
 // map from element type to its id attribute
 const identifiers = {
-  word: "word_text",
-  definition: "def_reference",
-  example: "example_text",
-  mention: "mention_hyperlink"
+  word: "text",
+  definition: "reference",
+  example: "text",
+  mention: "hyperlink"
 }
 
 function reportElement(word: Word, element_type: string, element_id: string, reporter: string): Word {
   word.reports.push({
     reporter,
-    reportee: element_id,
+    reportee: `${element_type}_${element_id}`,
     date: Date() 
   })
   if (element_type === "word") {
@@ -146,17 +146,17 @@ function reportElement(word: Word, element_type: string, element_id: string, rep
     return word
   }
   else if (element_type === "definition") {
-    const i = word.definitions.findIndex(def => def[identifiers[element_type]] === element_id)
+    const i = word.definitions.findIndex(def => element_type + "_" + def[identifiers[element_type]] === `${element_type}_${element_id}`)
     word.definitions[i].NV += 2
     return word
   }
-  else if (element.type == "example") {
-    const i = word.examples.findIndex(exam => exam[identifiers[element_type]] === element_id)
+  else if (element_type == "example") {
+    const i = word.examples.findIndex(exam => element_type + "_" + exam[identifiers[element_type]] === `${element_type}_${element_id}`)
     word.examples[i].NV += 2
     return word
   }
-  else if (element.type == "mention") {
-    const i = word.mentions.findIndex(mention => mention[identifiers[element_type]] === element_id)
+  else if (element_type == "mention") {
+    const i = word.mentions.findIndex(mention => element_type + "_" + mention[identifiers[element_type]] === `${element_type}_${element_id}`)
     word.mentions[i].NV += 2
     return word
   }
@@ -166,7 +166,7 @@ function reportElement(word: Word, element_type: string, element_id: string, rep
 } 
 
 function dereportElement(word: Word, element_type: string, element_id: string, reporter: string): Word {
-  const filtered = word.reports.filter(rep => rep.reporter !== reporter && rep.reportee !== element_id)
+  const filtered = word.reports.filter(rep => !(rep.reporter === reporter && rep.reportee === `${element_type}_${element_id}`))
   if (filtered.length === word.reports.length) {
     throw Error("dereportElement Error: no report found to remove!")
   }
@@ -176,17 +176,17 @@ function dereportElement(word: Word, element_type: string, element_id: string, r
     return word
   }
   else if (element_type === "definition") {
-    const i = word.definitions.findIndex(def => def[identifiers[element_type]] === element_id)
+    const i = word.definitions.findIndex(def => element_type + "_" + def[identifiers[element_type]] === `${element_type}_${element_id}`)
     word.definitions[i].NV -= 2
     return word
   }
-  else if (element.type == "example") {
-    const i = word.examples.findIndex(exam => exam[identifiers[element_type]] === element_id)
+  else if (element_type == "example") {
+    const i = word.examples.findIndex(exam => element_type + "_" + exam[identifiers[element_type]] === `${element_type}_${element_id}`)
     word.examples[i].NV -= 2
     return word
   }
-  else if (element.type == "mention") {
-    const i = word.mentions.findIndex(mention => mention[identifiers[element_type]] === element_id)
+  else if (element_type == "mention") {
+    const i = word.mentions.findIndex(mention => element_type + "_" + mention[identifiers[element_type]] === `${element_type}_${element_id}`)
     word.mentions[i].NV -= 2
     return word
   }

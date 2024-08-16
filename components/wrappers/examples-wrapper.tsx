@@ -2,6 +2,14 @@ import { Word } from '@/lib/types';
 
 import { AddExampleForm } from '@/components/forms/add-example-form';
 import { FormDialog } from '@/components/FormDialog';
+import { ReportForm } from '@/components/forms/report-form'
+import { Flag } from 'lucide-react'
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 
 export function ExamplesWrapper({ word }: { word: Word }) {
   return (
@@ -22,12 +30,23 @@ export function ExamplesWrapper({ word }: { word: Word }) {
       {word.examples
         .filter((exam) => exam.text != '')
         .map((example, i) => (
-          <div key={i} className="my-6">
-            <p className="leading-7 [&:not(:first-child)]:mt-6">
-              {i + 1}. {example.text}
-            </p>
-            <label className="text-sm opacity-50">{example.reference}</label>
-          </div>
+        <div key={i} className="flex my-6">
+          <Popover>
+            <PopoverTrigger>
+              <div className="text-left">
+                <p className="leading-7 [&:not(:first-child)]:mt-6">
+                  {i + 1}. {example.text}
+                </p>
+                <label className="text-sm opacity-50">{example.reference}</label>
+              </div>
+            </PopoverTrigger>
+            <PopoverContent>
+              <ReportForm className="m-0 p-0" word_text={word.text} report_element="example" element_id={example.text}>
+                <div className="flex items-center"><Flag height={18} /><span className="ml-2">Report</span></div>
+              </ReportForm>
+            </PopoverContent>
+          </Popover>
+        </div>
         ))}
     </>
   );

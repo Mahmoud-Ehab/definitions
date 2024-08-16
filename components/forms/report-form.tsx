@@ -2,7 +2,6 @@
 
 import { useActionState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { Flag } from 'lucide-react';
 
 import { DereportForm } from '@/components/forms/dereport-form'
 import {
@@ -48,8 +47,8 @@ export function ReportForm(props: Props) {
 
   return (
     <Form {...form}>
-      <form action={formAction} className="m-4 max-w-96 space-y-8 md:min-w-72">
-        <button className="text-red-500 opacity-25 hover:opacity-100" type="submit"><Flag /></button>
+      <form action={formAction}>
+        <button className="text-red-500 opacity-25 hover:opacity-100" type="submit">{props.children}</button>
         <span className="hidden">
           <FormField
             control={form.control}
