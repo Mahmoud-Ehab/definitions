@@ -4,7 +4,7 @@ import './globals.css';
 
 import { inter } from '@/app/fonts';
 import { Button } from '@/components/ui/button';
-import { LogIn, LogOut } from 'lucide-react';
+import { LogIn, LogOut, Github } from 'lucide-react';
 
 import { ThemeProvider } from '@/components/theme-provider';
 import { ModeToggleBtn } from '@/components/ModeToggleBtn';
@@ -44,7 +44,11 @@ export default async function RootLayout({
           </header>
           {children}
           <Toaster />
-          <footer></footer>
+          <footer className="flex h-16 w-screen flex-row-reverse items-center justify-between bg-background p-8">
+            <a href="https://github.com/Mahmoud-Ehab/definitions">
+              <Github height={68} width={68} />
+            </a>
+          </footer>
         </ThemeProvider>
       </body>
     </html>
