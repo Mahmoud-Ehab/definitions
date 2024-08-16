@@ -26,6 +26,11 @@ export type Word = {
   mentions: Array<Mention>;
   V: number; // validity value
   NV: number; // invalidity value
+  reports: [
+    reporter: string,
+    reportee: string,
+    date: string
+  ];
 };
 
 // cracksdb Type object
@@ -54,4 +59,10 @@ export const DB_Word = {
   },
   V: 'number', // validity value
   NV: 'number', // invalidity value
+  reports: {
+    length: 'number',
+    reporter: 'string',
+    reportee: 'string',
+    date: 'string'
+  }
 };
