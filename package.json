@@ -22,6 +22,7 @@
     "cracksdb": "^1.1.0",
     "lucide-react": "^0.426.0",
     "next": "15.0.0-canary.66",
+    "next-auth": "5.0.0-beta.20",
     "next-themes": "^0.3.0",
     "primeng": "^17.18.8",
     "react": "19.0.0-rc-f38c22b244-20240704",
