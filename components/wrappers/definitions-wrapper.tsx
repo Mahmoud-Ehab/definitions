@@ -27,7 +27,7 @@ export function DefinitionsWrapper({ word }: { word: Word }) {
         <div key={i} className="my-6 flex items-end">
           <Popover>
             <PopoverTrigger>
-              <div>
+              <div className="text-left">
                 <p className="leading-7 [&:not(:first-child)]:mt-6">{def.text}</p>
                 <label className="text-sm opacity-50">{def.reference}</label>
               </div>
