@@ -3,11 +3,11 @@
 import { createContext } from 'react';
 import { StateManager, FileManager } from 'cracksdb';
 import { Word, DB_Word } from '@/lib/types';
-import path from 'node:path'
+import path from 'node:path';
 
 function createDB() {
   const RAILWAY_PATH = process.env.RAILWAY_VOLUME_MOUNT_PATH;
-  const db = new StateManager(path.join(RAILWAY_PATH || "./", 'db'), new FileManager({}));
+  const db = new StateManager(path.join(RAILWAY_PATH || './', 'db'), new FileManager({}));
   // Initialize the words objects StateFiles
   const alphabet = 'abcdefghijklmnopqrstuvwxyz';
   for (let l1 of alphabet) {
