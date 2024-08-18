@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { addWord } from '@/lib/actions';
 
@@ -18,10 +18,26 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { useToast } from '@/components/ui/use-toast';
 
 export function AddWordForm() {
   const [state, formAction] = useActionState(addWord, {});
   const form = useForm();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (state.message?.type === 'success') {
+      const word = state.message.text.split(' ')[0];
+      toast({
+        title: 'You may refresh the page and check it out. Unless you want to add more words.',
+        action: (
+          <a href={`/?search=${word}`}>
+            <Button variant="ghost">Refresh</Button>
+          </a>
+        ),
+      });
+    }
+  }, [state.message]);
 
   return (
     <Form {...form}>
