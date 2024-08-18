@@ -10,7 +10,10 @@ function createDB() {
   if (!RAILWAY_PATH || RAILWAY_PATH === '') {
     console.warn('RAILWAY_VOLUME_MOUNT_PATH undefined.');
   }
-  const db = new StateManager(path.join(RAILWAY_PATH || './', 'db'), new FileManager({}));
+  console.log("JUST for debugging: ", process.env)
+  const dbpath = path.join(RAILWAY_PATH || './', 'db');
+  console.log('db path: ', dbpath);
+  const db = new StateManager(dbpath, new FileManager({}));
   // Initialize the words objects StateFiles
   const alphabet = 'abcdefghijklmnopqrstuvwxyz';
   for (let l1 of alphabet) {
