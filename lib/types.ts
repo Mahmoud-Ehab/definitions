@@ -62,3 +62,17 @@ export const DB_Word = {
     date: 'string',
   },
 };
+
+
+export type User = {
+  email: string;
+  views: Array<{word: string}>;
+}
+
+export const DB_User = {
+  email: "string",
+  views: {
+    length: "number",
+    word: "string"
+  }
+}
