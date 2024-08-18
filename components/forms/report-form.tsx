@@ -17,7 +17,6 @@ import { Input } from '@/components/ui/input';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useToast } from '@/components/ui/use-toast';
-import { ToastAction } from '@/components/ui/toast';
 
 import { Report } from '@/lib/report-actions';
 
