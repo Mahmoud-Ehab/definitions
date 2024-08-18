@@ -17,6 +17,7 @@ export async function GET(req: Request) {
 
     // increase validity if an authenticated user retrieving the word
     (async () => {
+      if (!word.text) return;
       const session = await auth();
       if (!session?.user) {
         return;

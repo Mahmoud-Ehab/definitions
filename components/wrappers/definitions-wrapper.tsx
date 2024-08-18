@@ -23,7 +23,7 @@ export function DefinitionsWrapper({ word }: { word: Word }) {
           </FormDialog>
         </span>
       </h2>
-      {word.definitions.map((def, i) => (
+      {word.definitions.map((def, i) => (def.text &&
         <div key={i} className="my-6 flex items-end">
           <Popover>
             <PopoverTrigger>

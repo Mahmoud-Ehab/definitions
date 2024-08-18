@@ -35,12 +35,12 @@ export async function Report(_: State, formData: FormData) {
 
   try {
     const sf = (await getDB()).get(valFields.data.word_text.slice(0, 2));
-    const index = sf.getIndexOf((word) => (word as Word).text == valFields.data.word_text)[0];
-    let word = sf.get(index);
+    const index = sf.getIndexOf((word) => (word as Word).text === valFields.data.word_text)[0];
     // ensure that the word does exist
-    if (!(word as Word).text) {
-      return { message: { text: 'Cannot find the word ' + word.text, type: 'error' } };
+    if (index === undefined) {
+      return { message: { text: 'Cannot find the word: ' + valFields.data.word_text, type: 'error' } };
     }
+    let word = sf.get(index);
     // ensure that the form has been submitted with valid values
     const { report_element, element_id } = valFields.data;
     if (!['word', 'definition', 'example', 'mention'].includes(report_element)) {
@@ -57,7 +57,8 @@ export async function Report(_: State, formData: FormData) {
     }
     // report the element
     word = reportElement(word, report_element, element_id, session.user.email);
-    sf.update(index, () => word);
+    if (!word.text) sf.remove(index);
+    else sf.update(index, () => word);
     return {
       message: {
         text: 'Done. Thanks for reporting.',
@@ -95,12 +96,12 @@ export async function Dereport(_: State, formData: FormData) {
 
   try {
     const sf = (await getDB()).get(valFields.data.word_text.slice(0, 2));
-    const index = sf.getIndexOf((word) => (word as Word).text == valFields.data.word_text)[0];
-    let word = sf.get(index);
+    const index = sf.getIndexOf((word) => (word as Word).text === valFields.data.word_text)[0];
     // ensure that the word does exist
-    if (!(word as Word).text) {
-      return { message: { text: 'Cannot find the word ' + word.text, type: 'error' } };
+    if (index === undefined) {
+      return { message: { text: 'Cannot find the word: ' + valFields.data.word_text, type: 'error' } };
     }
+    let word = sf.get(index);
     // ensure that the form has been submitted with valid values
     const { report_element, element_id } = valFields.data;
     if (!['word', 'definition', 'example', 'mention'].includes(report_element)) {
@@ -116,9 +117,8 @@ export async function Dereport(_: State, formData: FormData) {
       },
     };
   } catch (err) {
-    console.error(Date().split(' ')[4], ': ', err);
     return {
-      message: { text: 'Something went wrong!', type: 'error' },
+      message: { text: err.message || 'Something went wrong!', type: 'error' },
     };
   }
 }
@@ -149,27 +149,39 @@ function reportElement(
   });
   if (element_type === 'word') {
     word.NV += 2;
-    return word;
+    return word.NV >= word.V ? {} : word;
   } else if (element_type === 'definition') {
     const i = word.definitions.findIndex(
       (def) =>
         element_type + '_' + def[identifiers[element_type]] === `${element_type}_${element_id}`,
     );
+    if (!word.definitions[i]) throw Error("Probably the item has already been deleted.");
     word.definitions[i].NV += 2;
+    if (word.definitions[i].NV >= word.definitions[i].V) {
+      word.definitions.splice(i, 1);
+    }
     return word;
   } else if (element_type == 'example') {
     const i = word.examples.findIndex(
       (exam) =>
         element_type + '_' + exam[identifiers[element_type]] === `${element_type}_${element_id}`,
     );
+    if (!word.examples[i]) throw Error("Probably the item has already been deleted.");
     word.examples[i].NV += 2;
+    if (word.examples[i].NV >= word.examples[i].V) {
+      word.examples.splice(i, 1);
+    }
     return word;
   } else if (element_type == 'mention') {
     const i = word.mentions.findIndex(
       (mention) =>
         element_type + '_' + mention[identifiers[element_type]] === `${element_type}_${element_id}`,
     );
+    if (!word.mentions[i]) throw Error("Probably the item has already been deleted.");
     word.mentions[i].NV += 2;
+    if (word.mentions[i].NV >= word.mentions[i].V) {
+      word.mentions.splice(i, 1);
+    }
     return word;
   } else {
     throw Error('reportElement Error: invalid usage!');
@@ -190,28 +202,31 @@ function dereportElement(
   }
   word.reports = filtered;
   if (element_type === 'word') {
-    word.NV -= 2;
+    if (word.NV > 0) word.NV -= 2;
     return word;
   } else if (element_type === 'definition') {
     const i = word.definitions.findIndex(
       (def) =>
         element_type + '_' + def[identifiers[element_type]] === `${element_type}_${element_id}`,
     );
-    word.definitions[i].NV -= 2;
+    if (!word.definitions[i]) throw Error("Probably the item has already been deleted.");
+    if (word.definitions[i].NV > 0) word.definitions[i].NV -= 2;
     return word;
   } else if (element_type == 'example') {
     const i = word.examples.findIndex(
       (exam) =>
         element_type + '_' + exam[identifiers[element_type]] === `${element_type}_${element_id}`,
     );
-    word.examples[i].NV -= 2;
+    if (!word.examples[i]) throw Error("Probably the item has already been deleted.");
+    if (word.examples[i].NV > 0) word.examples[i].NV -= 2;
     return word;
   } else if (element_type == 'mention') {
     const i = word.mentions.findIndex(
       (mention) =>
         element_type + '_' + mention[identifiers[element_type]] === `${element_type}_${element_id}`,
     );
-    word.mentions[i].NV -= 2;
+    if (!word.mentions[i]) throw Error("Probably the item has already been deleted.");
+    if (word.mentions[i].NV > 0) word.mentions[i].NV -= 2;
     return word;
   } else {
     throw Error('dereportElement Error: invalid usage!');
