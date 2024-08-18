@@ -10,7 +10,7 @@ function createDB() {
   if (!RAILWAY_PATH || RAILWAY_PATH === '') {
     console.warn('RAILWAY_VOLUME_MOUNT_PATH undefined.');
   }
-  console.log("JUST for debugging: ", process.env)
+  console.log("JUST for debugging: ", process.env);
   const dbpath = path.join(RAILWAY_PATH || './', 'db');
   console.log('db path: ', dbpath);
   const db = new StateManager(dbpath, new FileManager({}));
