@@ -60,7 +60,7 @@ export async function addWord(_: State, formData: FormData): Promise<State> {
   const newWord = {
     text: word_text.toLowerCase(),
     definitions: [
-      { text: '', reference: '', V:1, NV:0 }, // dump variable; cracksdb array shall not be empty
+      { text: '', reference: '', V: 1, NV: 0 }, // dump variable; cracksdb array shall not be empty
       {
         text: def_content,
         reference: def_reference,

@@ -38,7 +38,9 @@ export async function Report(_: State, formData: FormData) {
     const index = sf.getIndexOf((word) => (word as Word).text === valFields.data.word_text)[0];
     // ensure that the word does exist
     if (index === undefined) {
-      return { message: { text: 'Cannot find the word: ' + valFields.data.word_text, type: 'error' } };
+      return {
+        message: { text: 'Cannot find the word: ' + valFields.data.word_text, type: 'error' },
+      };
     }
     let word = sf.get(index);
     // ensure that the form has been submitted with valid values
@@ -99,7 +101,9 @@ export async function Dereport(_: State, formData: FormData) {
     const index = sf.getIndexOf((word) => (word as Word).text === valFields.data.word_text)[0];
     // ensure that the word does exist
     if (index === undefined) {
-      return { message: { text: 'Cannot find the word: ' + valFields.data.word_text, type: 'error' } };
+      return {
+        message: { text: 'Cannot find the word: ' + valFields.data.word_text, type: 'error' },
+      };
     }
     let word = sf.get(index);
     // ensure that the form has been submitted with valid values
@@ -155,7 +159,7 @@ function reportElement(
       (def) =>
         element_type + '_' + def[identifiers[element_type]] === `${element_type}_${element_id}`,
     );
-    if (!word.definitions[i]) throw Error("Probably the item has already been deleted.");
+    if (!word.definitions[i]) throw Error('Probably the item has already been deleted.');
     word.definitions[i].NV += 2;
     if (word.definitions[i].NV >= word.definitions[i].V) {
       word.definitions.splice(i, 1);
@@ -166,7 +170,7 @@ function reportElement(
       (exam) =>
         element_type + '_' + exam[identifiers[element_type]] === `${element_type}_${element_id}`,
     );
-    if (!word.examples[i]) throw Error("Probably the item has already been deleted.");
+    if (!word.examples[i]) throw Error('Probably the item has already been deleted.');
     word.examples[i].NV += 2;
     if (word.examples[i].NV >= word.examples[i].V) {
       word.examples.splice(i, 1);
@@ -177,7 +181,7 @@ function reportElement(
       (mention) =>
         element_type + '_' + mention[identifiers[element_type]] === `${element_type}_${element_id}`,
     );
-    if (!word.mentions[i]) throw Error("Probably the item has already been deleted.");
+    if (!word.mentions[i]) throw Error('Probably the item has already been deleted.');
     word.mentions[i].NV += 2;
     if (word.mentions[i].NV >= word.mentions[i].V) {
       word.mentions.splice(i, 1);
@@ -209,7 +213,7 @@ function dereportElement(
       (def) =>
         element_type + '_' + def[identifiers[element_type]] === `${element_type}_${element_id}`,
     );
-    if (!word.definitions[i]) throw Error("Probably the item has already been deleted.");
+    if (!word.definitions[i]) throw Error('Probably the item has already been deleted.');
     if (word.definitions[i].NV > 0) word.definitions[i].NV -= 2;
     return word;
   } else if (element_type == 'example') {
@@ -217,7 +221,7 @@ function dereportElement(
       (exam) =>
         element_type + '_' + exam[identifiers[element_type]] === `${element_type}_${element_id}`,
     );
-    if (!word.examples[i]) throw Error("Probably the item has already been deleted.");
+    if (!word.examples[i]) throw Error('Probably the item has already been deleted.');
     if (word.examples[i].NV > 0) word.examples[i].NV -= 2;
     return word;
   } else if (element_type == 'mention') {
@@ -225,7 +229,7 @@ function dereportElement(
       (mention) =>
         element_type + '_' + mention[identifiers[element_type]] === `${element_type}_${element_id}`,
     );
-    if (!word.mentions[i]) throw Error("Probably the item has already been deleted.");
+    if (!word.mentions[i]) throw Error('Probably the item has already been deleted.');
     if (word.mentions[i].NV > 0) word.mentions[i].NV -= 2;
     return word;
   } else {

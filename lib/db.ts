@@ -32,10 +32,9 @@ function createDB() {
 
   // Initialize users StateFile
   try {
-    const sf = db.add<User>("users");
+    const sf = db.add<User>('users');
     sf.extendUnitType(DB_User);
-  }
-  catch (e) {
+  } catch (e) {
     console.warn(Date().split(' ')[4] + ': users statefile is already initialized!');
   }
 

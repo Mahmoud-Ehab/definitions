@@ -23,31 +23,34 @@ export function DefinitionsWrapper({ word }: { word: Word }) {
           </FormDialog>
         </span>
       </h2>
-      {word.definitions.map((def, i) => (def.text &&
-        <div key={i} className="my-6 flex items-end">
-          <Popover>
-            <PopoverTrigger>
-              <div className="text-left">
-                <p className="leading-7 [&:not(:first-child)]:mt-6">{def.text}</p>
-                <label className="text-sm opacity-50">{def.reference}</label>
-              </div>
-            </PopoverTrigger>
-            <PopoverContent>
-              <ReportForm
-                className="m-0 p-0"
-                word_text={word.text}
-                report_element="definition"
-                element_id={def.reference}
-              >
-                <div className="flex items-center">
-                  <Flag height={18} />
-                  <span className="ml-2">Report</span>
-                </div>
-              </ReportForm>
-            </PopoverContent>
-          </Popover>
-        </div>
-      ))}
+      {word.definitions.map(
+        (def, i) =>
+          def.text && (
+            <div key={i} className="my-6 flex items-end">
+              <Popover>
+                <PopoverTrigger>
+                  <div className="text-left">
+                    <p className="leading-7 [&:not(:first-child)]:mt-6">{def.text}</p>
+                    <label className="text-sm opacity-50">{def.reference}</label>
+                  </div>
+                </PopoverTrigger>
+                <PopoverContent>
+                  <ReportForm
+                    className="m-0 p-0"
+                    word_text={word.text}
+                    report_element="definition"
+                    element_id={def.reference}
+                  >
+                    <div className="flex items-center">
+                      <Flag height={18} />
+                      <span className="ml-2">Report</span>
+                    </div>
+                  </ReportForm>
+                </PopoverContent>
+              </Popover>
+            </div>
+          ),
+      )}
     </>
   );
 }
