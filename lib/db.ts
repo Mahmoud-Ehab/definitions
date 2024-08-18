@@ -7,6 +7,9 @@ import path from 'node:path';
 
 function createDB() {
   const RAILWAY_PATH = process.env.RAILWAY_VOLUME_MOUNT_PATH;
+  if (!RAILWAY_PATH || RAILWAY_PATH === '') {
+    console.warn('RAILWAY_VOLUME_MOUNT_PATH undefined.');
+  }
   const db = new StateManager(path.join(RAILWAY_PATH || './', 'db'), new FileManager({}));
   // Initialize the words objects StateFiles
   const alphabet = 'abcdefghijklmnopqrstuvwxyz';
