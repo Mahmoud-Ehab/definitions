@@ -1,6 +1,5 @@
 'use server';
 
-import { createContext } from 'react';
 import { StateManager, FileManager } from 'cracksdb';
 import { Word, DB_Word, User, DB_User } from '@/lib/types';
 import path from 'node:path';

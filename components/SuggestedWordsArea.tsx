@@ -29,7 +29,7 @@ export default function SuggestedWordsArea(props: Props) {
 
   return (
     <ScrollArea
-      className={cn('z-30 m-2 h-auto max-h-72 w-auto rounded-md border bg-background', {
+      className={cn('z-30 h-72 m-2 w-auto rounded-md border bg-background', {
         hidden: words.length == 0,
       })}
     >

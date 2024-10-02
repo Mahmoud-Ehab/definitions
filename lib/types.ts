@@ -1,3 +1,5 @@
+import { Type } from "cracksdb/dist/types";
+
 export type Definition = {
   text: string;
   reference: string;
@@ -30,7 +32,7 @@ export type Word = {
 };
 
 // cracksdb Type object
-export const DB_Word = {
+export const DB_Word: Type = {
   text: 'string',
   definitions: {
     length: 'number',
@@ -68,7 +70,7 @@ export type User = {
   views: Array<{ word: string }>;
 };
 
-export const DB_User = {
+export const DB_User: Type = {
   email: 'string',
   views: {
     length: 'number',
