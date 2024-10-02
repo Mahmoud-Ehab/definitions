@@ -15,7 +15,7 @@ export async function GET() {
     const dbpath = path.join(RAILWAY_PATH || './', 'db');
 
     const zip = new AdmZip();
-    zip.addLocalFolder(dbpath)
+    zip.addLocalFolder(dbpath);
 
     const zipBuffer = zip.toBuffer();
 

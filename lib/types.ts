@@ -1,4 +1,4 @@
-import { Type } from "cracksdb/dist/types";
+import { Type } from 'cracksdb/dist/types';
 
 export type Definition = {
   text: string;
